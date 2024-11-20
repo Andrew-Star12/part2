@@ -1,0 +1,98 @@
+body{
+    background: #2c2c2c;
+    color: #fff;
+
+}
+aside{
+    float: left;
+    background: #181818;
+    width: 20%;
+    padding: 2.5%;
+    border-right: 5px solid #4d4d4d;
+    height: 100vh;
+}
+aside ul {list-style: none; margin-top: 20px}
+
+main{
+    margin: auto;
+}
+a {text-decoration: none; color: #fff}
+
+aside h3 {color: #3r3r3r}
+
+main .features{
+    float: left;
+    margin-top: 100px;
+    text-align: center;
+    width: 75%;
+}
+
+.features h1{
+    margin-bottom: 50px;
+}
+
+.alert {
+    width: 500px;
+    margin: auto;
+    background: #1D3557;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+.features form button {
+    margin-top: 40px;
+}
+.features form input{
+    width: 60%;
+    margin: auto;
+}
+
+.form-control{
+    width: 60%;
+    margin: auto;
+}
+
+.poll{
+    margin: auto;
+    width: 50%;
+}
+form{
+    width:100%;
+}
+h1{
+    margin: auto;
+}
+.home {
+    width: 100%;
+}
+ul, li {
+  list-style: none;
+}
+.home h1 {
+    text-align: center;
+    height: 100px;
+}
+
+.auth-buttons {
+    margin-top: 20px;
+}
+
+.auth-buttons .btn {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.auth-buttons .btn-login {
+    background-color: #007bff;
+}
+
+.auth-buttons .btn-register {
+    background-color: #28a745;
+}
+
+.auth-buttons .btn:hover {
+    opacity: 0.8;
+}
