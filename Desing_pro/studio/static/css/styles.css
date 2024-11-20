@@ -269,3 +269,125 @@ ul, li {
 .register-link a:hover {
     text-decoration: underline;
 }
+
+/* Стили для главной страницы */
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    text-align: center;
+    background-color: #2c2c2c;  /* Светлый фон */
+
+}
+
+.home-title {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.auth-buttons {
+    margin-bottom: 30px;
+}
+
+.auth-buttons .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 0 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.auth-buttons .btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.btn-login {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+.btn-register {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.btn-logout {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+.intro {
+    max-width: 600px;
+    margin-top: 40px;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.intro ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 20px;
+}
+
+.intro ul li {
+    margin-bottom: 10px;
+}
+
+.intro p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.sidebar {
+    position: fixed; /* Фиксируем панель слева */
+    top: 0;
+    left: 0;
+    width: 250px; /* Ширина боковой панели */
+    height: 100vh; /* Панель должна быть на всю высоту экрана */
+    background-color: #2c2c2c /* Светлый фон для панели */
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Тень для отделения панели */
+    z-index: 100; /* Чтобы панель была сверху */
+}
+
+.sidebar h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    color: #007bff; /* Цвет ссылки при наведении */
+}
+
+/* Основной контент */
+.content {
+    margin-left: 270px; /* Отступ от левой стороны, чтобы основной контент не перекрывал панель */
+    padding: 20px;
+    background-color: #2c2c2c; /* Цвет фона для контента */
+    min-height: 100vh; /* Страница должна быть на всю высоту */
+}

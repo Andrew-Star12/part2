@@ -1,26 +1,32 @@
 {% extends 'studio/base.html' %}
 
-{% block content %}
+{{% block content %}
 <div class="home">
-    <h1>Добро пожаловать в студию Design.pro</h1>
-   <div class="auth-buttons">
-    {% if user.is_authenticated %}
-        <!-- Форма для выхода, которая использует метод POST -->
-        <form action="{% url 'studio:logout' %}" method="POST">
-            {% csrf_token %}
-            <button class="btn btn-login" type="submit">Выйти</button>
-        </form>
-    {% else %}
-        <!-- Ссылки на вход и регистрацию -->
-        <a class="btn btn-login" href="{% url 'studio:login' %}">Вход</a> |
-        <a class="btn btn-register" href="{% url 'studio:register' %}">Зарегистрироваться</a>
-    {% endif %}
-    <p>Мы создаем уникальные интерьеры для вашего дома и офиса. Просмотрите наши предложения по оформлению помещений!</p>
-    <p>Наши услуги:</p>
-    <ul>
-        <li>Проектирование интерьера</li>
-        <li>Дизайн жилых и коммерческих помещений</li>
-        <li>Ремонт и отделка</li>
-    </ul>
+    <h1 class="home-title">Добро пожаловать в студию Design.pro</h1>
+
+    <div class="auth-buttons">
+        {% if user.is_authenticated %}
+            <!-- Форма для выхода -->
+            <form action="{% url 'studio:logout' %}" method="POST" class="logout-form">
+                {% csrf_token %}
+                <button class="btn btn-logout" type="submit">Выйти</button>
+            </form>
+        {% else %}
+            <!-- Ссылки на вход и регистрацию -->
+            <a class="btn btn-login" href="{% url 'studio:login' %}">Вход</a> |
+            <a class="btn btn-register" href="{% url 'studio:register' %}">Зарегистрироваться</a>
+        {% endif %}
+    </div>
+
+    <div class="intro">
+        <p>Мы создаем уникальные интерьеры для вашего дома и офиса. Просмотрите наши предложения по оформлению помещений!</p>
+
+        <p>Наши услуги:</p>
+        <ul>
+            <li>Проектирование интерьера</li>
+            <li>Дизайн жилых и коммерческих помещений</li>
+            <li>Ремонт и отделка</li>
+        </ul>
+    </div>
 </div>
 {% endblock %}
