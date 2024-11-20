@@ -16,13 +16,8 @@
     <aside>
         <h3>Навигация</h3>
         <ul>
-            <a href=""><li>Главная</li></a>
+            <li><a href="{% url 'studio:home' %}">Главная</a></li>
 
-            {% if user.is_authenticated %}
-                <!-- Появляется только если пользователь авторизован -->
-                <a href=""><li>Профиль</li></a>
-
-            {% endif %}
 
 
         </ul>
