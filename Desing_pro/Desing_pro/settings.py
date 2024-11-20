@@ -125,6 +125,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'studio:login'
+LOGOUT_REDIRECT_URL = '/'  # Путь, на который перенаправляется пользователь после выхода
+# AUTH_USER_MODEL = 'studio.CustomUser'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 

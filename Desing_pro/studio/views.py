@@ -2,11 +2,13 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from .forms import CustomAuthenticationForm
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 
 
@@ -18,8 +20,7 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()  # Создаем нового пользователя
-            login(request, user)  # Выполняем вход
-            return redirect('studio:home')  # Перенаправляем на главную страницу
+            return redirect('studio:login')  # Перенаправляем на главную страницу
     else:
         form = CustomUserCreationForm()
 
@@ -29,10 +30,16 @@ def login_view(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            user = form.get_user()  # Получаем пользователя из формы
-            login(request, user)  # Выполняем вход
-            return redirect('studio:home')  # Перенаправляем на главную страницу
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('studio:home')
+            else:
+                form.add_error(None, 'Invalid credentials')
     else:
         form = CustomAuthenticationForm()
 
     return render(request, 'registration/login.html', {'form': form})
+
