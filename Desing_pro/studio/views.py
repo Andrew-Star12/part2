@@ -110,14 +110,14 @@ def captcha_view(request):
 @login_required
 def create_request(request):
     if request.method == 'POST':
-        form = RequestForm(request.POST, request.FILES)  # Обрабатываем файлы
+        form = RequestForm(request.POST, request.FILES)
         if form.is_valid():
-            # Сохраняем заявку
-            form.save()
+            request_instance = form.save(commit=False)
+            request_instance.user = request.user
+            request_instance.save()
+
             messages.success(request, 'Заявка успешно создана!')
-            return redirect('studio:view_requests')  # Перенаправление на страницу просмотра заявок
-        else:
-            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+            return redirect('studio:view_requests')
     else:
         form = RequestForm()
 
