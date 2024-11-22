@@ -19,6 +19,14 @@
                 {{ form.password }}
             </div>
 
+            <!-- Капча -->
+            <div class="form-group">
+                <label for="id_captcha">Введите капчу</label>
+                <img src="{% url 'studio:captcha' %}" alt="captcha" class="captcha-img">
+                {{ form.captcha.errors }}
+                {{ form.captcha }}
+            </div>
+
             <button type="submit" class="btn-submit">Войти</button>
         </form>
         <p class="register-link">Нет аккаунта? <a href="{% url 'studio:register' %}">Зарегистрироваться</a></p>
