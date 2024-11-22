@@ -1,0 +1,19 @@
+<!-- view_requests.html -->
+{% extends 'studio/base.html' %}
+
+{% block content %}
+  <h1>Мои заявки</h1>
+  
+  {% if requests %}
+    <ul>
+      {% for request in requests %}
+        <li>
+          <a href="{% url 'studio:request_detail' pk=request.pk %}">{{ request.title }}</a>  <!-- Ссылка на детальную страницу заявки -->
+          <p>{{ request.description|truncatewords:20 }}</p>  <!-- Краткое описание -->
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>У вас нет заявок.</p>
+  {% endif %}
+{% endblock %}

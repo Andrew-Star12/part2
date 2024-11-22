@@ -1,0 +1,22 @@
+{% extends 'studio/base.html' %}
+
+{% block content %}
+<div class="create-request-container">
+    <h1>Создать заявку на разработку дизайна</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn-submit">Создать заявку</button>
+    </form>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p class="message {{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

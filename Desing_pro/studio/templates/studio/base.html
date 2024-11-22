@@ -17,7 +17,10 @@
     <h3>Навигация</h3>
     <ul>
         <li><a href="{% url 'studio:home' %}">Главная</a></li>
-        <!-- Добавьте другие ссылки навигации, если нужно -->
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'studio:create_request' %}" class="btn btn-primary">Создать заявку</a></li>
+            <li><a href="{% url 'studio:view_requests' %}" class="btn btn-secondary">Мои заявки</a></li>
+        {% endif %}
     </ul>
 </aside>
 

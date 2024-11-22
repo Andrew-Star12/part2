@@ -137,4 +137,9 @@ LOGOUT_REDIRECT_URL = '/'  # Путь, на который перенаправ�
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 

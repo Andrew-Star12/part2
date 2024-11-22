@@ -1,0 +1,27 @@
+{% extends 'studio/base.html' %}
+
+{% block title %}Заявка: {{ request.title }}{% endblock %}
+
+{% block content %}
+    <div class="request-detail-container">
+        <h1>{{ request.title }}</h1>
+        <p><strong>Категория:</strong> {{ request.category.name }}</p>
+        <p><strong>Описание:</strong></p>
+        <p>{{ request.description }}</p>
+
+        {% if request.photo %}
+            <div class="request-photo">
+                <h3>Фото помещения</h3>
+                <img src="{{ request.photo.url }}" alt="Фото помещения" class="img-fluid">
+            </div>
+        {% endif %}
+
+        <!-- Кнопка для удаления заявки -->
+        <form method="POST" action="{% url 'studio:delete_request' request.id %}" class="mt-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Удалить заявку</button>
+        </form>
+
+        <a href="{% url 'studio:view_requests' %}" class="btn btn-secondary mt-3">Назад к моим заявкам</a>
+    </div>
+{% endblock %}

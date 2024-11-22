@@ -13,6 +13,13 @@ from django.contrib.auth.forms import UserCreationForm
 from PIL import Image, ImageDraw, ImageFont
 from django.http import HttpResponse
 from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import RequestForm
+from .models import Request
+from django.shortcuts import render
+from .models import Request
 
 
 
@@ -99,3 +106,42 @@ def captcha_view(request):
 
     # Отправляем изображение капчи в ответ
     return HttpResponse(img_io, content_type='image/png')
+
+@login_required
+def create_request(request):
+    if request.method == 'POST':
+        form = RequestForm(request.POST, request.FILES)  # Обрабатываем файлы
+        if form.is_valid():
+            # Сохраняем заявку
+            form.save()
+            messages.success(request, 'Заявка успешно создана!')
+            return redirect('studio:view_requests')  # Перенаправление на страницу просмотра заявок
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+    else:
+        form = RequestForm()
+
+    return render(request, 'studio/create_request.html', {'form': form})
+
+@login_required
+def view_requests(request):
+    user_requests = Request.objects.filter(user=request.user)
+    return render(request, 'studio/view_requests.html', {'requests': user_requests})
+
+@login_required
+def delete_request(request, request_id):
+    user_request = get_object_or_404(Request, id=request_id, user=request.user)
+    user_request.delete()
+    messages.success(request, 'Заявка успешно удалена!')
+    return redirect('studio:view_requests')
+
+
+def request_detail(request, pk):
+    # Получаем заявку по ее первичному ключу (ID)
+    request_detail = get_object_or_404(Request, pk=pk)
+
+    return render(request, 'studio/request_detail.html', {'request': request_detail})
+
+def view_requests(request):
+    user_requests = Request.objects.filter(user=request.user)  # Получаем заявки текущего пользователя
+    return render(request, 'studio/view_requests.html', {'requests': user_requests})
