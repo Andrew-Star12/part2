@@ -1,12 +1,33 @@
 {% extends 'studio/base.html' %}
 
+{% block title %}Создание заявки{% endblock %}
+
 {% block content %}
 <div class="create-request-container">
     <h1>Создать заявку на разработку дизайна</h1>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" class="request-form">
         {% csrf_token %}
-        {{ form.as_p }}
+
+        <div class="form-group">
+            <label for="id_title">Название</label>
+            {{ form.title }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_description">Описание</label>
+            {{ form.description }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_category">Категория</label>
+            {{ form.category }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_photo">Фото</label>
+            {{ form.photo }}
+        </div>
 
         <button type="submit" class="btn-submit">Создать заявку</button>
     </form>
