@@ -145,11 +145,30 @@ def delete_request(request, request_id):
     return redirect('studio:view_requests')
 
 
+@login_required
 def request_detail(request, pk):
     # Получаем заявку по ее первичному ключу (ID)
-    request_detail = get_object_or_404(Request, pk=pk)
+    user_request = get_object_or_404(Request, pk=pk)
 
-    return render(request, 'studio/request_detail.html', {'request': request_detail})
+    # Проверяем, является ли пользователь администратором или владельцем заявки
+    if not request.user.is_staff and request.user != user_request.user:
+        messages.error(request, 'У вас нет прав для изменения этой заявки.')
+        return redirect('studio:view_requests')
+
+    # Обработка формы для изменения статуса
+    if request.method == 'POST':
+        form = StatusChangeForm(request.POST, instance=user_request)
+        if form.is_valid():
+            form.save()  # Сохраняем новый статус
+            messages.success(request, f"Статус заявки '{user_request.title}' изменен!")
+            return redirect('studio:request_detail', pk=user_request.pk)  # Оставляем на этой же странице
+    else:
+        form = StatusChangeForm(instance=user_request)
+
+    return render(request, 'studio/request_detail.html', {
+        'request': user_request,
+        'form': form
+    })
 
 @login_required
 def change_status(request, pk):
@@ -180,23 +199,22 @@ def admin_view_requests(request):
     return render(request, 'studio/admin_view_requests.html', {'requests': requests})
 
 
-@staff_member_required
-def change_request_status(request, request_id, status):
+@staff_member_required  # Убедимся, что доступ имеют только администраторы
+def change_request_status(request, request_id):
     # Получаем заявку по ID
     user_request = get_object_or_404(Request, id=request_id)
 
     # Проверяем, что статус допустимый
-    if status not in ['in_progress', 'completed']:
-        messages.error(request, 'Неверный статус')
-        return redirect('studio:admin_view_requests')
+    if request.method == 'POST':
+        form = StatusChangeForm(request.POST, instance=user_request)
+        if form.is_valid():
+            form.save()  # Сохраняем новый статус
+            messages.success(request, f"Статус заявки '{user_request.title}' изменен!")
+            return redirect('studio:admin_view_requests')  # Возвращаем на страницу с заявками
+    else:
+        form = StatusChangeForm(instance=user_request)
 
-    # Обновляем статус заявки
-    user_request.status = status
-    user_request.save()
-
-    # Отправляем сообщение об успешном изменении статуса
-    messages.success(request, f"Статус заявки '{user_request.title}' изменен на '{status.replace('_', ' ').title()}'")
-    return redirect('studio:admin_view_requests')
+    return render(request, 'studio/change_status.html', {'form': form, 'request': user_request})
 
 def change_status(request, pk):
     # Получаем заявку по первичному ключу

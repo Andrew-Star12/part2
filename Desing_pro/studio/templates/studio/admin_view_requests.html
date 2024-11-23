@@ -34,7 +34,7 @@
               <td>{{ request.created_at }}</td>
               <td>
                 {% if request.status != 'completed' %}
-                  <a href="{% url 'studio:change_status' pk=request.pk %}" class="btn btn-primary">Изменить статус</a>
+                  <a href="{% url 'studio:request_detail' pk=request.pk %}" class="btn btn-primary">Изменить статус</a>
                 {% else %}
                   <button class="btn btn-success" disabled>Завершено</button>
                 {% endif %}
