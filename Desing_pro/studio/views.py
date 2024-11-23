@@ -1,25 +1,19 @@
-from django.shortcuts import render
 from .forms import CustomUserCreationForm
-from django.contrib.auth import authenticate, login
 from .forms import CustomAuthenticationForm
 from django.contrib.auth import logout
-from django.shortcuts import redirect
 import random
 import string
 from io import BytesIO
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
 from PIL import Image, ImageDraw, ImageFont
 from django.http import HttpResponse
-from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from .forms import RequestForm
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Request
-from django.shortcuts import render
-from .models import Request
+from .forms import StatusChangeForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 
@@ -71,7 +65,9 @@ def logout_view(request):
     return redirect('studio:home')  # перенаправление на главную страницу после выхода
 
 def generate_captcha_text(length=5):
-    characters = string.ascii_lowercase + string.ascii_uppercase + string.digits
+    characters = "абвгдеёжзийклмнопрстуфхцчшщьыэюя"  # Кириллические буквы
+    characters += characters.upper()  # Добавляем заглавные кириллические буквы
+    characters += "0123456789"  # Добавляем цифры
     return ''.join(random.choice(characters) for _ in range(length))
 
 def create_captcha_image(captcha_text):
@@ -142,6 +138,67 @@ def request_detail(request, pk):
 
     return render(request, 'studio/request_detail.html', {'request': request_detail})
 
-def view_requests(request):
-    user_requests = Request.objects.filter(user=request.user)  # Получаем заявки текущего пользователя
-    return render(request, 'studio/view_requests.html', {'requests': user_requests})
+@login_required
+def change_status(request, pk):
+    # Получаем заявку по ее первичному ключу
+    request_instance = get_object_or_404(Request, pk=pk)
+
+    # Проверяем, является ли пользователь владельцем заявки
+    if request.user != request_instance.user:
+        messages.error(request, 'У вас нет прав для изменения статуса этой заявки.')
+        return redirect('studio:view_requests')
+
+    if request.method == 'POST':
+        form = StatusChangeForm(request.POST, instance=request_instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Статус заявки изменен!')
+            return redirect('studio:request_detail', pk=request_instance.pk)
+    else:
+        form = StatusChangeForm(instance=request_instance)
+
+    return render(request, 'studio/change_status.html', {'form': form, 'request': request_instance})
+
+@staff_member_required  # Убедимся, что доступ имеют только администраторы
+def admin_view_requests(request):
+    # Получаем все заявки
+    requests = Request.objects.all()
+
+    return render(request, 'studio/admin_view_requests.html', {'requests': requests})
+
+
+@staff_member_required
+def change_request_status(request, request_id, status):
+    # Получаем заявку по ID
+    user_request = get_object_or_404(Request, id=request_id)
+
+    # Проверяем, что статус допустимый
+    if status not in ['in_progress', 'completed']:
+        messages.error(request, 'Неверный статус')
+        return redirect('studio:admin_view_requests')
+
+    # Обновляем статус заявки
+    user_request.status = status
+    user_request.save()
+
+    # Отправляем сообщение об успешном изменении статуса
+    messages.success(request, f"Статус заявки '{user_request.title}' изменен на '{status.replace('_', ' ').title()}'")
+    return redirect('studio:admin_view_requests')
+
+def change_status(request, pk):
+    # Получаем заявку по первичному ключу
+    request_instance = get_object_or_404(Request, pk=pk)
+
+    # Изменяем статус, например, на "Принято в работу"
+    if request_instance.status == 'new':
+        request_instance.status = 'in_progress'
+    elif request_instance.status == 'in_progress':
+        request_instance.status = 'completed'
+    else:
+        # Уже завершено, ничего не делаем
+        pass
+
+    request_instance.save()
+
+    # Перенаправляем на страницу всех заявок
+    return redirect('studio:view_requests')

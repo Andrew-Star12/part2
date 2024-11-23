@@ -16,4 +16,7 @@ urlpatterns = [
     path('view-requests/', views.view_requests, name='view_requests'),  # Просмотр заявок
     path('delete-request/<int:request_id>/', views.delete_request, name='delete_request'),  # Удаление заявки
     path('request/<int:pk>/', views.request_detail, name='request_detail'),  # Новый путь для отдельной заявки
+    path('admin-view-requests/', views.admin_view_requests, name='admin_view_requests'),  # Новое имя пути
+    path('change-status/<int:pk>/', views.change_status, name='change_status'),
+    path('change-request-status/<int:request_id>/<str:status>/', views.change_request_status, name='change_request_status'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -52,3 +52,14 @@ class RequestForm(forms.ModelForm):
                 raise forms.ValidationError("Недопустимый формат изображения.")
 
         return photo
+
+class StatusChangeForm(forms.ModelForm):
+    class Meta:
+        model = Request
+        fields = ['status']
+
+    # Добавим выбор доступных статусов
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['status'].widget = forms.Select(choices=Request.STATUS_CHOICES)
+

@@ -21,6 +21,9 @@
             <li><a href="{% url 'studio:create_request' %}" class="btn btn-primary">Создать заявку</a></li>
             <li><a href="{% url 'studio:view_requests' %}" class="btn btn-secondary">Мои заявки</a></li>
         {% endif %}
+        {% if user.is_authenticated and user.is_staff %}
+            <li><a href="{% url 'studio:admin_view_requests' %}" class="btn btn-warning">Все заявки</a></li>
+        {% endif %}
     </ul>
 </aside>
 

@@ -29,6 +29,9 @@ class Request(models.Model):
     def __str__(self):
         return self.title
 
+    def get_status_display(self):
+        return dict(self.STATUS_CHOICES).get(self.status, self.status)
+
     def clean(self):
         # Проверка максимального размера изображения
         if self.photo and self.photo.size > 2 * 1024 * 1024:  # 2 МБ
