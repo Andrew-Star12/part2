@@ -2,18 +2,19 @@ from .forms import CustomUserCreationForm
 from .forms import CustomAuthenticationForm
 from django.contrib.auth import logout
 import random
-import string
 from io import BytesIO
 from django.contrib.auth import authenticate, login
 from PIL import Image, ImageDraw, ImageFont
 from django.http import HttpResponse
 from .forms import RequestForm
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Request
+from django.shortcuts import  get_object_or_404, redirect
 from .forms import StatusChangeForm
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .forms import RequestFilterForm
+from .models import Request
 
 
 
@@ -121,8 +122,20 @@ def create_request(request):
 
 @login_required
 def view_requests(request):
+    # Получаем все заявки пользователя
     user_requests = Request.objects.filter(user=request.user)
-    return render(request, 'studio/view_requests.html', {'requests': user_requests})
+
+    # Фильтрация по статусу
+    form = RequestFilterForm(request.GET)  # Используем GET для получения данных формы
+    if form.is_valid():
+        status = form.cleaned_data.get('status')
+        if status:
+            user_requests = user_requests.filter(status=status)
+
+    return render(request, 'studio/view_requests.html', {
+        'requests': user_requests,
+        'form': form,
+    })
 
 @login_required
 def delete_request(request, request_id):

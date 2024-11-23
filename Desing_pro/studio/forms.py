@@ -63,3 +63,11 @@ class StatusChangeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['status'].widget = forms.Select(choices=Request.STATUS_CHOICES)
 
+class RequestFilterForm(forms.Form):
+    STATUS_CHOICES = [
+        ('', 'Все статусы'),
+        ('new', 'Новая'),
+        ('in_progress', 'Принято в работу'),
+        ('completed', 'Выполнено'),
+    ]
+    status = forms.ChoiceField(choices=STATUS_CHOICES, required=False, label="Статус заявки")
