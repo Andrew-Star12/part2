@@ -1,0 +1,35 @@
+{% extends 'studio/base.html' %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-box">
+        <h1>Вход в систему</h1>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                {{ form.username.errors }}
+                <label for="id_username">Имя пользователя</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.errors }}
+                <label for="id_password">Пароль</label>
+                {{ form.password }}
+            </div>
+
+            <!-- Капча -->
+            <div class="form-group">
+                <label for="id_captcha">Введите капчу</label>
+                <img src="{% url 'studio:captcha' %}" alt="captcha" class="captcha-img">
+                {{ form.captcha.errors }}
+                {{ form.captcha }}
+            </div>
+
+            <button type="submit" class="btn-submit">Войти</button>
+        </form>
+        <p class="register-link">Нет аккаунта? <a href="{% url 'studio:register' %}">Зарегистрироваться</a></p>
+    </div>
+</div>
+{% endblock %}

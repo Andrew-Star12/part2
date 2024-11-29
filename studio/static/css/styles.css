@@ -1,0 +1,633 @@
+body{
+    background: #2c2c2c;
+    color: #fff;
+
+}
+aside{
+    float: left;
+    background: #181818;
+    width: 20%;
+    padding: 2.5%;
+    border-right: 5px solid #4d4d4d;
+    height: 100vh;
+}
+aside ul {list-style: none; margin-top: 20px}
+
+main{
+    margin: auto;
+}
+a {text-decoration: none; color: #fff}
+
+aside h3 {color: #3r3r3r}
+
+main .features{
+    float: left;
+    margin-top: 100px;
+    text-align: center;
+    width: 75%;
+}
+
+.features h1{
+    margin-bottom: 50px;
+}
+
+.alert {
+    width: 500px;
+    margin: auto;
+    background: #1D3557;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+.features form button {
+    margin-top: 40px;
+}
+.features form input{
+    width: 60%;
+    margin: auto;
+}
+
+.form-control{
+    width: 60%;
+    margin: auto;
+}
+
+.poll{
+    margin: auto;
+    width: 50%;
+}
+form{
+    width:100%;
+}
+h1{
+    margin: auto;
+}
+.home {
+    width: 100%;
+}
+ul, li {
+  list-style: none;
+}
+.home h1 {
+    text-align: center;
+    height: 100px;
+}
+
+.auth-buttons {
+    margin-top: 20px;
+}
+
+.auth-buttons .btn {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.auth-buttons .btn-login {
+    background-color: #007bff;
+}
+
+.auth-buttons .btn-register {
+    background-color: #28a745;
+}
+
+.auth-buttons .btn:hover {
+    opacity: 0.8;
+}
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f7fc;
+}
+
+.register-box {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.register-box h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #4e73df;
+    outline: none;
+}
+
+.form-group input.error {
+    border-color: red;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #4e73df;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #3b5b9b;
+}
+
+.login-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: black;
+}
+
+.login-link a {
+    color: blue;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f7fc;
+}
+
+.login-box {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-box h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #4e73df;
+    outline: none;
+}
+
+.form-group input.error {
+    border-color: red;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #4e73df;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #3b5b9b;
+}
+
+.register-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: black;
+}
+
+.register-link a {
+    color: #4e73df;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Стили для главной страницы */
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    text-align: center;
+    background-color: #2c2c2c;  /* Светлый фон */
+
+}
+
+.home-title {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.auth-buttons {
+    margin-bottom: 30px;
+}
+
+.auth-buttons .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 0 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.auth-buttons .btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.btn-login {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+.btn-register {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.btn-logout {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+.intro {
+    max-width: 600px;
+    margin-top: 40px;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.intro ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 20px;
+}
+
+.intro ul li {
+    margin-bottom: 10px;
+}
+
+.intro p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.sidebar {
+    position: fixed; /* Фиксируем панель слева */
+    top: 0;
+    left: 0;
+    width: 250px; /* Ширина боковой панели */
+    height: 100vh; /* Панель должна быть на всю высоту экрана */
+    background-color: #2c2c2c /* Светлый фон для панели */
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Тень для отделения панели */
+    z-index: 100; /* Чтобы панель была сверху */
+}
+
+.sidebar h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    color: #007bff; /* Цвет ссылки при наведении */
+}
+
+/* Основной контент */
+.content {
+    margin-left: 270px; /* Отступ от левой стороны, чтобы основной контент не перекрывал панель */
+    padding: 20px;
+    background-color: #2c2c2c; /* Цвет фона для контента */
+    min-height: 100vh; /* Страница должна быть на всю высоту */
+}
+
+.messages {
+    color: black;
+}
+
+.message{
+    color: black;
+}
+
+.captcha-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+}
+
+.captcha-wrapper {
+    width: 150px;    /* Устанавливаем фиксированную ширину */
+    height: 40px;    /* Устанавливаем фиксированную высоту */
+    overflow: hidden; /* Обрезаем, если изображение не помещается */
+    margin-bottom: 10px;
+}
+
+.captcha-img {
+    width: 50%;
+    height: 100%;
+    object-fit: contain; /* Уменьшаем изображение, чтобы оно поместилось */
+}
+/* Опционально: Ограничиваем размеры самого контейнера, если нужно */
+.form-group img {
+    width: 80%;  /* Устанавливаем ширину изображения в пределах контейнера */
+    height: auto; /* Пропорции сохраняются */
+}
+
+.create-request-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: black;
+    margin-bottom: 20px;
+}
+
+/* Стили для формы */
+.request-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    font-weight: bold;
+    color: #555;
+}
+
+input, textarea, select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #007bff;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Кнопка отправки */
+.btn-submit {
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+/* Стили для сообщений */
+.messages {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    border-radius: 4px;
+}
+
+.messages .message.success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.messages .message.error {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+.my-requests-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Стили для списка заявок */
+.request-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.request-item {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.request-item:hover {
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Стили для ссылки на заявку */
+.request-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.request-link:hover {
+    color: #0056b3;
+}
+
+/* Стили для описания заявки */
+.request-description {
+    color: #555;
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+/* Стили для кнопки создания заявки */
+.btn-create-request {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-create-request:hover {
+    background-color: #0056b3;
+}
+
+/* Кнопка "Подробнее" */
+.btn-detail-request {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.btn-detail-request:hover {
+    background-color: #0056b3;
+}
+
+/* Кнопка "Создать заявку" */
+.btn-create-request {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-create-request:hover {
+    background-color: #0056b3;
+}
+.request-item h2{
+    color: black
+}
+.my-requests-container h1{
+    color: black
+}
