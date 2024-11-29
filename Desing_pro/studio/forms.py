@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .models import Request
+from .models import Category
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -71,3 +72,16 @@ class RequestFilterForm(forms.Form):
         ('completed', 'Выполнено'),
     ]
     status = forms.ChoiceField(choices=STATUS_CHOICES, required=False, label="Статус заявки")
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'description']
+
+class PaymentStatusForm(forms.ModelForm):
+    class Meta:
+        model = Request
+        fields = ['paid']
+        widgets = {
+            'paid': forms.CheckboxInput(attrs={'checked': True}),
+        }

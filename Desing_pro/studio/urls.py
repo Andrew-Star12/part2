@@ -1,4 +1,6 @@
 from django.urls import path
+from rest_framework.authtoken.views import obtain_auth_token
+
 from . import views
 from django.contrib.auth.views import LogoutView
 from django.conf import settings
@@ -19,4 +21,11 @@ urlpatterns = [
     path('admin-view-requests/', views.admin_view_requests, name='admin_view_requests'),  # Новое имя пути
     path('change-status/<int:pk>/', views.change_status, name='change_status'),
     path('change-status/<int:request_id>/', views.change_request_status, name='change_request_status'),
+
+    path('api/token/', obtain_auth_token, name='api-token'),
+    path('categories/', views.category_list, name='category_list'),
+    path('categories/create/', views.category_create, name='category_create'),
+    path('categories/edit/<int:pk>/', views.category_edit, name='category_edit'),
+    path('categories/delete/<int:pk>/', views.category_delete, name='category_delete'),
+    path('mark-as-paid/<int:request_id>/', views.mark_as_paid, name='mark_as_paid'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -24,6 +24,8 @@
         {% if user.is_authenticated and user.is_staff %}
             <li><a href="{% url 'studio:admin_view_requests' %}" class="btn btn-warning">Все заявки</a></li>
         {% endif %}
+        <!-- Кнопка для перехода к списку категорий -->
+        <li><a href="{% url 'studio:category_list' %}" class="btn btn-info">Список категорий</a></li>
     </ul>
 </aside>
 

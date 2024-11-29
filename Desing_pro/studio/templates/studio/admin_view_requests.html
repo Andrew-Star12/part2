@@ -13,6 +13,7 @@
             <th>Пользователь</th>
             <th>Статус</th>
             <th>Дата создания</th>
+            <th>Оплачено</th>  <!-- Добавляем столбец для статуса оплаты -->
             <th>Действия</th>
           </tr>
         </thead>
@@ -33,10 +34,27 @@
               </td>
               <td>{{ request.created_at }}</td>
               <td>
+                {% if request.paid %}
+                  <span class="badge bg-success">Оплачено</span>
+                {% else %}
+                  <span class="badge bg-danger">Не оплачено</span>
+                {% endif %}
+              </td>
+              <td>
                 {% if request.status != 'completed' %}
                   <a href="{% url 'studio:request_detail' pk=request.pk %}" class="btn btn-primary">Изменить статус</a>
                 {% else %}
                   <button class="btn btn-success" disabled>Завершено</button>
+                {% endif %}
+
+                {% if not request.paid %}
+                  <!-- Кнопка для пометки заявки как оплаченной -->
+                  <form method="post" action="{% url 'studio:mark_as_paid' request.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Пометить как оплачено</button>
+                  </form>
+                {% else %}
+                  <button class="btn btn-secondary" disabled>Уже оплачено</button>
                 {% endif %}
               </td>
             </tr>

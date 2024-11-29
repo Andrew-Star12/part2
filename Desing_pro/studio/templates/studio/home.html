@@ -1,6 +1,6 @@
 {% extends 'studio/base.html' %}
 
-{{% block content %}
+{% block content %}
 <div class="home">
     <h1 class="home-title">Добро пожаловать в студию Design.pro</h1>
 
@@ -28,5 +28,28 @@
             <li>Ремонт и отделка</li>
         </ul>
     </div>
+
+    <!-- Уведомление о не оплаченных заявках -->
+    {% if unpaid_requests %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Внимание!</strong> Некоторые заявки не оплачены более 3 дней.
+            <ul class="mt-3">
+                {% for request in unpaid_requests %}
+                    <li>
+                        <strong>{{ request.title }}</strong> от пользователя <em>{{ request.user.username }}</em>
+                        <br>
+                        <small>Создана: {{ request.created_at|date:"d M Y, H:i" }}</small>
+                        <br>
+                        <a href="{% url 'studio:request_detail' pk=request.pk %}" class="btn btn-link">Перейти к заявке</a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    {% else %}
+        <div class="alert alert-success" role="alert">
+            <strong>Все заявки оплачены!</strong> На данный момент все заявки находятся в порядке.
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

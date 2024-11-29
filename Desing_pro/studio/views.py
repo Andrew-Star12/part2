@@ -5,21 +5,39 @@ import random
 from io import BytesIO
 from django.contrib.auth import authenticate, login
 from PIL import Image, ImageDraw, ImageFont
-from django.http import HttpResponse
 from .forms import RequestForm
-from django.shortcuts import  get_object_or_404, redirect
 from .forms import StatusChangeForm
-from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .forms import RequestFilterForm
+from .forms import CategoryForm
+from django.utils import timezone
+from datetime import timedelta
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
 from .models import Request
+from django.http import JsonResponse, HttpResponse
+from rest_framework.parsers import JSONParser
+from .models import Category
+from .serializers import CategorySerializer
+from django.views.decorators.csrf import csrf_exempt
 
 
 
 def home(request):
-    return render(request, 'studio/home.html')
+    # Получаем все заявки, которые не оплачены более 3 дней
+    unpaid_requests = Request.objects.filter(
+        paid=False,
+        created_at__lte=timezone.now() - timedelta(days=3)
+    )
+
+    # Передаем в контекст уведомления для пользователя и администратора
+    context = {
+        'unpaid_requests': unpaid_requests,
+    }
+
+    return render(request, 'studio/home.html', context)
 
 def register(request):
     form = CustomUserCreationForm()  # Инициализируем форму до проверки POST запроса
@@ -233,3 +251,102 @@ def change_status(request, pk):
 
     # Перенаправляем на страницу всех заявок
     return redirect('studio:view_requests')
+
+
+@staff_member_required
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'studio/category_list.html', {'categories': categories})
+
+@staff_member_required
+def category_create(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('studio:category_list')
+    else:
+        form = CategoryForm()
+    return render(request, 'studio/category_form.html', {'form': form})
+
+@staff_member_required
+def category_edit(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('studio:category_list')
+    else:
+        form = CategoryForm(instance=category)
+    return render(request, 'studio/category_form.html', {'form': form})
+
+@staff_member_required
+def category_delete(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    category.delete()
+    return redirect('studio:category_list')
+
+
+@staff_member_required  # Убедимся, что доступ только для менеджеров
+def mark_as_paid(request, request_id):
+    user_request = get_object_or_404(Request, id=request_id)
+
+    # Помечаем заявку как оплаченную
+    if not user_request.paid:
+        user_request.paid = True
+        user_request.save()
+        messages.success(request, f"Заявка '{user_request.title}' успешно помечена как оплаченная.")
+    else:
+        messages.info(request, f"Заявка '{user_request.title}' уже оплачена.")
+
+    return redirect('studio:admin_view_requests')  # Перенаправляем обратно на список заявок
+
+
+
+
+
+@csrf_exempt
+def category_list(request):
+    """
+    List all categories, or create a new category.
+    """
+    if request.method == 'GET':
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = CategorySerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+
+
+@csrf_exempt
+def category_detail(request, pk):
+    """
+    Retrieve, update or delete a category.
+    """
+    try:
+        category = Category.objects.get(pk=pk)
+    except Category.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = CategorySerializer(category)
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = CategorySerializer(category, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        category.delete()
+        return HttpResponse(status=204)
