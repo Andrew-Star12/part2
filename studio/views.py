@@ -344,7 +344,6 @@ def category_list(request):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
-
 @csrf_exempt
 def category_detail(request, pk):
     """

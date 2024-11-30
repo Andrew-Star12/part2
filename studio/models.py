@@ -9,6 +9,7 @@ from datetime import timedelta
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)  # Это поле должно быть здесь!
+    comment = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.name
