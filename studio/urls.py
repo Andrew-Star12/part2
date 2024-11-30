@@ -24,6 +24,7 @@ urlpatterns = [
 
     path('api/token/', obtain_auth_token, name='api-token'),
     path('categories/', views.category_list, name='category_list'),
+    path('categories/<int:pk>/', views.category_detail, name='category_detail'),
     path('categories/create/', views.category_create, name='category_create'),
     path('categories/edit/<int:pk>/', views.category_edit, name='category_edit'),
     path('categories/delete/<int:pk>/', views.category_delete, name='category_delete'),
