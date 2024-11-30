@@ -1,0 +1,35 @@
+{% extends 'studio/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="page-title">Ваши заявки</h1>
+
+    <!-- Форма для фильтрации -->
+    <div class="filter-form">
+      <h3>Фильтр заявок</h3>
+      <form method="get">
+        <div class="form-group">
+          {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Фильтровать</button>
+      </form>
+    </div>
+      <br>
+    <!-- Список заявок -->
+    <div class="request-list">
+      {% if requests %}
+        <ul class="list-group">
+          {% for request in requests %}
+            <li class="list-group-item">
+              <strong>{{ request.title }}</strong><br>
+              <span class="status-label">{{ request.get_status_display }}</span><br>
+              <a class="btn btn-info btn-sm" href="{% url 'studio:request_detail' pk=request.pk %}">Подробнее</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="alert alert-info" role="alert">У вас нет заявок.</div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

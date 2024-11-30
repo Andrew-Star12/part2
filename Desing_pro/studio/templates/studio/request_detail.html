@@ -1,0 +1,31 @@
+{% extends 'studio/base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Заявка: {{ request.title }}</h1>
+
+    <p><strong>Описание:</strong> {{ request.description }}</p>
+    <p><strong>Категория:</strong> {{ request.category.name }}</p>
+    <p><strong>Статус:</strong>
+      {% if request.status == 'new' %}
+        <span class="badge bg-secondary">Новая</span>
+      {% elif request.status == 'in_progress' %}
+        <span class="badge bg-warning text-dark">Принято в работу</span>
+      {% elif request.status == 'completed' %}
+        <span class="badge bg-success">Выполнено</span>
+      {% endif %}
+    </p>
+    <p><strong>Дата создания:</strong> {{ request.created_at }}</p>
+
+    {% if user.is_staff %}
+      <h3>Изменить статус заявки</h3>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+      </form>
+    {% endif %}
+
+    <a href="{% url 'studio:admin_view_requests' %}" class="btn btn-secondary mt-3">Назад к списку заявок</a>
+  </div>
+{% endblock %}
