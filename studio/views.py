@@ -1,3 +1,8 @@
+from rest_framework.authtoken.admin import User
+from tutorial.quickstart.serializers import UserSerializer
+from rest_framework import viewsets
+from django.contrib.auth.models import User
+from .serializers import UserSerializer
 from .forms import CustomUserCreationForm
 from .forms import CustomAuthenticationForm
 from django.contrib.auth import logout
@@ -24,10 +29,9 @@ from .serializers import CategorySerializer
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 from .models import Category
 from .serializers import CategorySerializer
-
 
 
 def home(request):
@@ -43,6 +47,7 @@ def home(request):
     }
 
     return render(request, 'studio/home.html', context)
+
 
 def register(request):
     form = CustomUserCreationForm()  # Инициализируем форму до проверки POST запроса
@@ -84,15 +89,19 @@ def login_view(request):
         form = CustomAuthenticationForm()
 
     return render(request, 'registration/login.html', {'form': form})
+
+
 def logout_view(request):
     logout(request)
     return redirect('studio:home')  # перенаправление на главную страницу после выхода
+
 
 def generate_captcha_text(length=5):
     characters = "абвгдеёжзийклмнопрстуфхцчшщьыэюя"  # Кириллические буквы
     characters += characters.upper()  # Добавляем заглавные кириллические буквы
     characters += "0123456789"  # Добавляем цифры
     return ''.join(random.choice(characters) for _ in range(length))
+
 
 def create_captcha_image(captcha_text):
     width, height = 200, 60
@@ -127,6 +136,7 @@ def captcha_view(request):
     # Отправляем изображение капчи в ответ
     return HttpResponse(img_io, content_type='image/png')
 
+
 @login_required
 def create_request(request):
     if request.method == 'POST':
@@ -142,6 +152,7 @@ def create_request(request):
         form = RequestForm()
 
     return render(request, 'studio/create_request.html', {'form': form})
+
 
 @login_required
 def view_requests(request):
@@ -159,6 +170,7 @@ def view_requests(request):
         'requests': user_requests,
         'form': form,
     })
+
 
 @login_required
 def delete_request(request, request_id):
@@ -193,6 +205,7 @@ def request_detail(request, pk):
         'form': form
     })
 
+
 @login_required
 def change_status(request, pk):
     # Получаем заявку по ее первичному ключу
@@ -213,6 +226,7 @@ def change_status(request, pk):
         form = StatusChangeForm(instance=request_instance)
 
     return render(request, 'studio/change_status.html', {'form': form, 'request': request_instance})
+
 
 @staff_member_required  # Убедимся, что доступ имеют только администраторы
 def admin_view_requests(request):
@@ -239,6 +253,7 @@ def change_request_status(request, request_id):
 
     return render(request, 'studio/change_status.html', {'form': form, 'request': user_request})
 
+
 def change_status(request, pk):
     # Получаем заявку по первичному ключу
     request_instance = get_object_or_404(Request, pk=pk)
@@ -263,6 +278,7 @@ def category_list(request):
     categories = Category.objects.all()
     return render(request, 'studio/category_list.html', {'categories': categories})
 
+
 @staff_member_required
 def category_create(request):
     if request.method == 'POST':
@@ -273,6 +289,7 @@ def category_create(request):
     else:
         form = CategoryForm()
     return render(request, 'studio/category_form.html', {'form': form})
+
 
 @staff_member_required
 def category_edit(request, pk):
@@ -285,6 +302,7 @@ def category_edit(request, pk):
     else:
         form = CategoryForm(instance=category)
     return render(request, 'studio/category_form.html', {'form': form})
+
 
 @staff_member_required
 def category_delete(request, pk):
@@ -306,9 +324,6 @@ def mark_as_paid(request, request_id):
         messages.info(request, f"Заявка '{user_request.title}' уже оплачена.")
 
     return redirect('studio:admin_view_requests')  # Перенаправляем обратно на список заявок
-
-
-
 
 
 @csrf_exempt
@@ -357,7 +372,6 @@ def category_detail(request, pk):
         return HttpResponse(status=204)
 
 
-
 @api_view(['GET', 'POST'])
 def category_list(request):
     """
@@ -374,6 +388,7 @@ def category_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def category_detail(request, pk):
@@ -399,3 +414,73 @@ def category_detail(request, pk):
     elif request.method == 'DELETE':
         category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST'])
+def create_user(request):
+    """
+    Create a new user.
+    """
+    if request.method == 'POST':
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()  # Создаем пользователя и хешируем его пароль
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()  # Получаем всех пользователей
+    serializer_class = UserSerializer  # Используем сериализатор
+
+
+@api_view(['GET'])
+def user_list(request):
+    users = User.objects.all()  # Получаем всех пользователей
+    serializer = UserSerializer(users, many=True)  # Сериализуем всех пользователей
+    return Response(serializer.data)  # Возвращаем данные в формате JSON
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+# ViewSet для пользователей
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+def user_detail(request, pk):
+    try:
+        user = User.objects.get(pk=pk)
+    except User.DoesNotExist:
+        return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    # Получение данных пользователя
+    if request.method == 'GET':
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+    # Обновление данных пользователя (PUT)
+    elif request.method == 'PUT':
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Частичное обновление данных пользователя (PATCH)
+    elif request.method == 'PATCH':
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        # Удаляем пользователя
+        user.delete()
+        return Response({"detail": "User deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+

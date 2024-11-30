@@ -5,8 +5,18 @@ from . import views
 from django.contrib.auth.views import LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
+from rest_framework.routers import DefaultRouter
 
 app_name = 'studio'
+
+
+
+# Создаем роутер
+router = DefaultRouter()
+router.register(r'categories', views.CategoryViewSet)
+router.register(r'users', views.UserViewSet)
+
 
 urlpatterns = [
     path('', views.home, name='home'),  # Главная страница
@@ -29,4 +39,7 @@ urlpatterns = [
     path('categories/edit/<int:pk>/', views.category_edit, name='category_edit'),
     path('categories/delete/<int:pk>/', views.category_delete, name='category_delete'),
     path('mark-as-paid/<int:request_id>/', views.mark_as_paid, name='mark_as_paid'),
+
+    path('users/', views.user_list, name='user_list'),  # Путь для получения списка пользователей
+    path('users/<int:pk>/', views.user_detail, name='user_detail'),  # Редактирование пользователя
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
